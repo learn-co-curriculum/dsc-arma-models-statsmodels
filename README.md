@@ -1,5 +1,5 @@
 
-# ARMA models - Lab
+# ARMA Models - Lab
 
 ## Introduction
 
