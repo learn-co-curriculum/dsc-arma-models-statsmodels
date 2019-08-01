@@ -686,6 +686,21 @@ print(res_arma.params)
 ## What is your final model? Why did you pick this model?
 
 
+```python
+# Your comments here
+```
+
+
+```python
+# __SOLUTION__
+
+"""
+ARMA(1,0), ARMA(2,2) and ARMA(2,1) all seem to have decent fits with significant parameters. 
+Depending on whether you pick AIC or BIC as a model selection criterion, 
+your result may vary. In this situation, you'd generally go for a model with fewer parameters, 
+so ARMA seems fine. Note that we have a relatively short time series, which can lead to a more difficult model selection process.
+"""
+```
 
 ## Summary
 
