@@ -192,6 +192,11 @@ Based on the ACF and PACF, fit an arma model with the right orders for AR and MA
 
 ## What is your final model? Why did you pick this model?
 
+
+```python
+# Your comments here
+```
+
 ## Summary
 
 Great! Now that you know the ins and outs of ARMA models and you've practiced your modeling knowledge.
