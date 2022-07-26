@@ -1,5 +1,4 @@
-
-# ARMA Models in `statsmodels`
+# ARMA Models in StatsModels
 
 ## Introduction
 
@@ -68,7 +67,9 @@ series.plot(figsize=(14,6), linewidth=2, fontsize=14);
 ```
 
 
+    
 ![png](index_files/index_8_0.png)
+    
 
 
 ## Look at the ACF and PACF of the model
@@ -88,11 +89,15 @@ plot_pacf(series, ax=ax, lags=40);
 ```
 
 
+    
 ![png](index_files/index_11_0.png)
+    
 
 
 
+    
 ![png](index_files/index_11_1.png)
+    
 
 
 ## Check the model with ARMA in `statsmodels`
@@ -206,7 +211,9 @@ series.plot(figsize=(14,6), linewidth=2, fontsize=14);
 ```
 
 
+    
 ![png](index_files/index_23_0.png)
+    
 
 
 ## Look at the ACF and PACF of the model
@@ -221,11 +228,15 @@ plot_pacf(series, ax=ax, lags=40);
 ```
 
 
+    
 ![png](index_files/index_25_0.png)
+    
 
 
 
+    
 ![png](index_files/index_25_1.png)
+    
 
 
 ## Check the model with ARMA in `statsmodels`
