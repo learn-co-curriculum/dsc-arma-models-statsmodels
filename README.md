@@ -104,16 +104,24 @@ plot_pacf(series, ax=ax, lags=40);
 
 `statsmodels` also has a tool that fits ARMA models to time series. The only thing we have to do is provide the number of orders for AR and MA. Have a look at the code below, and the output of the code. 
 
-The `ARMA()` function requires two arguments: the first is the time series to which the model is fit, and the second is the `order` in the form `(p,q)` -- where `p` refers to the order of AR and `q` refers to the order of MA. For example, a first order AR model would be represented as `(1,0)`.  
+The `ARIMA()` function requires two arguments:
+
+1. The first is the time series to which the model is fit
+2. The second is the `order` of the model in the form `(p, d, q)`
+   * `p` refers to the order of AR
+   * `d` refers to the order of I (which will be discussed in a future lesson -- for now just use 0)
+   * `q` refers to the order of MA
+
+For example, a first order AR model would be represented as `(1,0,0)`.  
 
 
 ```python
-# Import ARMA
-from statsmodels.tsa.arima_model import ARMA
+# Import ARIMA
+from statsmodels.tsa.arima.model import ARIMA
 import statsmodels.api as sm
 
 # Instantiate an AR(1) model to the simulated data
-mod_arma = ARMA(series, order=(1,0))
+mod_arma = ARIMA(series, order=(1,0,0))
 ```
 
 Once you have instantiated the AR(1) model, you can call the `.fit()` method to the fit the model to the data. 
@@ -132,26 +140,30 @@ Similar to other models, you can then call the `.summary()` method to print the 
 print(res_arma.summary())
 ```
 
-                                  ARMA Model Results                              
+                                   SARIMAX Results                                
     ==============================================================================
     Dep. Variable:                      y   No. Observations:                  455
-    Model:                     ARMA(1, 0)   Log Likelihood                -968.698
-    Method:                       css-mle   S.D. of innovations              2.033
-    Date:                Mon, 13 Jan 2020   AIC                           1943.395
-    Time:                        13:44:07   BIC                           1955.756
+    Model:                 ARIMA(1, 0, 0)   Log Likelihood                -968.698
+    Date:                Mon, 22 Aug 2022   AIC                           1943.395
+    Time:                        17:17:35   BIC                           1955.756
     Sample:                    01-01-2017   HQIC                          1948.265
                              - 03-31-2018                                         
+    Covariance Type:                  opg                                         
     ==============================================================================
                      coef    std err          z      P>|z|      [0.025      0.975]
     ------------------------------------------------------------------------------
-    const          4.9664      0.269     18.444      0.000       4.439       5.494
-    ar.L1.y        0.6474      0.036     17.880      0.000       0.576       0.718
-                                        Roots                                    
-    =============================================================================
-                      Real          Imaginary           Modulus         Frequency
-    -----------------------------------------------------------------------------
-    AR.1            1.5446           +0.0000j            1.5446            0.0000
-    -----------------------------------------------------------------------------
+    const          4.9664      0.262     18.937      0.000       4.452       5.480
+    ar.L1          0.6474      0.036     18.108      0.000       0.577       0.718
+    sigma2         4.1327      0.289     14.289      0.000       3.566       4.700
+    ===================================================================================
+    Ljung-Box (L1) (Q):                   0.00   Jarque-Bera (JB):                 0.99
+    Prob(Q):                              0.99   Prob(JB):                         0.61
+    Heteroskedasticity (H):               1.02   Skew:                             0.08
+    Prob(H) (two-sided):                  0.89   Kurtosis:                         2.84
+    ===================================================================================
+    
+    Warnings:
+    [1] Covariance matrix calculated using the outer product of gradients (complex-step).
 
 
 Make sure that the output for the $\phi$ parameter and $\mu$ is as you'd expect. You can use the `.params` attribute to check these values. 
@@ -162,8 +174,9 @@ Make sure that the output for the $\phi$ parameter and $\mu$ is as you'd expect.
 print(res_arma.params)
 ```
 
-    const      4.966376
-    ar.L1.y    0.647429
+    const     4.966442
+    ar.L1     0.647429
+    sigma2    4.132665
     dtype: float64
 
 
@@ -246,33 +259,37 @@ Let's fit an MA model to verify the parameters are estimated correctly. The firs
 
 ```python
 # Instantiate and fit an MA(1) model to the simulated data
-mod_arma = ARMA(series, order=(0,1))
+mod_arma = ARIMA(series, order=(0,0,1))
 res_arma = mod_arma.fit()
 
 # Print out summary information on the fit
 print(res_arma.summary())
 ```
 
-                                  ARMA Model Results                              
+                                   SARIMAX Results                                
     ==============================================================================
     Dep. Variable:                      y   No. Observations:                  153
-    Model:                     ARMA(0, 1)   Log Likelihood                -426.378
-    Method:                       css-mle   S.D. of innovations              3.909
-    Date:                Mon, 13 Jan 2020   AIC                            858.757
-    Time:                        13:44:08   BIC                            867.848
+    Model:                 ARIMA(0, 0, 1)   Log Likelihood                -426.378
+    Date:                Mon, 22 Aug 2022   AIC                            858.757
+    Time:                        17:17:36   BIC                            867.848
     Sample:                    04-01-2015   HQIC                           862.450
                              - 08-31-2015                                         
+    Covariance Type:                  opg                                         
     ==============================================================================
                      coef    std err          z      P>|z|      [0.025      0.975]
     ------------------------------------------------------------------------------
-    const          7.5373      0.590     12.776      0.000       6.381       8.694
-    ma.L1.y        0.8727      0.051     17.165      0.000       0.773       0.972
-                                        Roots                                    
-    =============================================================================
-                      Real          Imaginary           Modulus         Frequency
-    -----------------------------------------------------------------------------
-    MA.1           -1.1459           +0.0000j            1.1459            0.5000
-    -----------------------------------------------------------------------------
+    const          7.5373      0.625     12.069      0.000       6.313       8.761
+    ma.L1          0.8727      0.047     18.489      0.000       0.780       0.965
+    sigma2        15.2765      1.592      9.597      0.000      12.156      18.397
+    ===================================================================================
+    Ljung-Box (L1) (Q):                   5.72   Jarque-Bera (JB):                 9.11
+    Prob(Q):                              0.02   Prob(JB):                         0.01
+    Heteroskedasticity (H):               1.14   Skew:                            -0.48
+    Prob(H) (two-sided):                  0.65   Kurtosis:                         3.70
+    ===================================================================================
+    
+    Warnings:
+    [1] Covariance matrix calculated using the outer product of gradients (complex-step).
 
 
 
@@ -281,11 +298,12 @@ print(res_arma.summary())
 print(res_arma.params)
 ```
 
-    const      7.537294
-    ma.L1.y    0.872683
+    const      7.537262
+    ma.L1      0.872686
+    sigma2    15.276484
     dtype: float64
 
 
 ## Summary
 
-Great job! In this lesson, you saw how you can use the AR and MA models using the `ARMA()` function from `statsmodels` by specifying the order in the form of `(p,q)`, where at least one of `p` or `q` was zero depending on the kind of model fit. You can use `ARMA()` to fit a combined ARMA model as well -- which you will do in the next lab! 
+Great job! In this lesson, you saw how you can use the AR and MA models using the `ARIMA()` function from `statsmodels` by specifying the order in the form of `(p,q)`, where at least one of `p` or `q` was zero depending on the kind of model fit. You can use `ARIMA()` to fit a combined ARMA model as well -- which you will do in the next lab! 
