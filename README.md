@@ -82,10 +82,10 @@ from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.graphics.tsaplots import plot_acf
 
 fig, ax = plt.subplots(figsize=(16,3))
-plot_acf(series, ax=ax, lags=40);
+plot_acf(series, ax=ax, lags=40)
 
 fig, ax = plt.subplots(figsize=(16,3))
-plot_pacf(series, ax=ax, lags=40);
+plot_pacf(series, ax=ax, lags=40, method="ywm")
 ```
 
 
@@ -234,10 +234,10 @@ series.plot(figsize=(14,6), linewidth=2, fontsize=14);
 
 ```python
 fig, ax = plt.subplots(figsize=(16,3))
-plot_acf(series, ax=ax, lags=40);
+plot_acf(series, ax=ax, lags=40)
 
 fig, ax = plt.subplots(figsize=(16,3))
-plot_pacf(series, ax=ax, lags=40);
+plot_pacf(series, ax=ax, lags=40, method="ywm")
 ```
 
 
